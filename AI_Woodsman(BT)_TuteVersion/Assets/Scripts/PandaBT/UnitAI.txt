@@ -1,0 +1,60 @@
+tree("Root")
+   fallback
+		tree("woodcutter")
+		tree("idle")
+
+ 
+tree ("woodcutter")
+	while 
+		isWoodcutter
+		sequence
+			StandUp
+			sequence
+				tree("checkPants")
+				tree("checkHandRight")
+				tree("harvestWood")
+
+tree("checkPants")
+	fallback
+		CheckGear "brown_pants" 1
+		sequence
+			SetDestinationToNearbyEquipmentStorage "pants"
+			GoToDestination
+			FaceInteractable
+			TakeClothingOrEquipmentAndEquip "Legs"
+
+tree("checkHandRight")
+	fallback
+		CheckGear "axe" 3
+		sequence
+			SetDestinationToNearbyEquipmentStorage "axe"
+			GoToDestination
+			FaceInteractable
+			TakeClothingOrEquipmentAndEquip "HandRight"
+
+tree("harvestWood")
+	repeat
+		sequence
+			ResetClosestHavestObjectVariable
+			SetDestinationToNearestHarvestObject
+			GoToDestination
+			FaceInteractable
+			HarvestObject
+			WaitForTreeToFall
+			ProcessHarvestObject
+			TriggerPickUpAnimation
+			CollectHarvestedObject
+			SetDestinationToNearbyEquipmentStorage "wood"
+			GoToDestination
+			DropLog
+
+tree("idle")
+	while 
+		isIdle
+		fallback
+			sequence
+				FindStool
+				GoToDestination
+				FaceInteractable 
+				SitOnStool
+			StandAround
